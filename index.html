@@ -1,0 +1,116 @@
+<html>
+<head>
+  <title>Motivational Msg App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Cambria, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: all 0.3s ease-in-out;
+    }
+
+    h1 {
+      font-size: 6vw;
+      color: #003366;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 4vw;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-bottom: 30px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    #msg, #aut {
+      font-size: 4vw;
+      margin: 20px 0;
+      color: #222;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #msg.visible, #aut.visible {
+      opacity: 1;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 3vw;
+      }
+
+      button {
+        font-size: 1.5vw;
+      }
+
+      #msg, #aut {
+        font-size: 1.5vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌟 Motivation Boost 🌟</h1>
+    <button onclick="gm()">Get Message</button>
+    <div id="msg"></div>
+    <div id="aut"></div>
+  </div>
+
+  <script>
+    function gm() {
+      const msg = document.getElementById("msg");
+      const aut = document.getElementById("aut");
+
+      msg.classList.remove("visible");
+      aut.classList.remove("visible");
+
+      fetch("https://quotes-api-self.vercel.app/quote")
+        .then(res => res.json())
+        .then(data => {
+          msg.innerHTML = `❝ ${data.quote} ❞`;
+          aut.innerHTML = `— ${data.author}`;
+          setTimeout(() => {
+            msg.classList.add("visible");
+            aut.classList.add("visible");
+          }, 100);
+        })
+        .catch(err => {
+          msg.innerHTML = "Something went wrong 😕";
+          aut.innerHTML = "";
+          msg.classList.add("visible");
+        });
+    }
+  </script>
+</body>
+</html>
